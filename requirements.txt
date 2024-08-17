@@ -5,7 +5,8 @@ pillow==10.3.0
 scikit-learn==1.4.2
 wfdb==4.1.2
 ultralytics
---index-url https://download.pytorch.org/whl/cu121
+
+-f https://download.pytorch.org/whl/cu121
 torch
 torchvision
 torchaudio
