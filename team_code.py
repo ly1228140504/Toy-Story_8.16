@@ -115,11 +115,11 @@ def train_models(data_folder, model_folder, verbose):
 # arguments of this function. If you do not train one of the models, then you can return None for the model.
 def load_models(model_folder, verbose):
     digitization_filename = os.path.join(model_folder, 'digitization_model.sav')
-    digitization_model = joblib.load(digitization_filename)
+    #digitization_model = joblib.load(digitization_filename)
 
     classification_filename = os.path.join(model_folder, 'classification_model.sav')
     classification_model = joblib.load(classification_filename)
-    return digitization_model, classification_model
+    return None, classification_model
 
 # Run your trained digitization model. This function is *required*. You should edit this function to add your code, but do *not*
 # change the arguments of this function. If you did not train one of the models, then you can return None for the model.
