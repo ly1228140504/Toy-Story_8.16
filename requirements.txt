@@ -5,6 +5,7 @@ pillow==10.3.0
 scikit-learn==1.4.2
 wfdb==4.1.2
 ultralytics
+opencv-python-headless
 torch==2.0.1+cu117
 torchaudio==2.0.2+cu117
 torchvision==0.15.2+cu117
