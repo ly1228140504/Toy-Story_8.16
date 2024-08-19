@@ -9,3 +9,5 @@ WORKDIR /challenge
 
 ## Include the following line if you have a requirements.txt file.
 RUN pip install -r requirements.txt
+RUN pip uninstall opencv-python
+RUN pip install opencv-python-headless
