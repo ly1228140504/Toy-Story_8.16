@@ -18,6 +18,7 @@ import sys
 from helper_code import *
 import torch
 import cv2
+from try_xresnet import xresnet1d
 
 ################################################################################
 #
@@ -114,12 +115,20 @@ def train_models(data_folder, model_folder, verbose):
 # Load your trained models. This function is *required*. You should edit this function to add your code, but do *not* change the
 # arguments of this function. If you do not train one of the models, then you can return None for the model.
 def load_models(model_folder, verbose):
-    digitization_filename = os.path.join(model_folder, 'digitization_model.sav')
-    #digitization_model = joblib.load(digitization_filename)
-
     classification_filename = os.path.join(model_folder, 'classification_model.sav')
-    classification_model = joblib.load(classification_filename)
-    return None, classification_model
+    #classification_model = joblib.load(classification_filename)
+    model = xresnet1d.xresnet1d101(model_drop_r=None,
+                     original_f_number=False,
+                     # Original xResnet's Resblock Filter Dim if True
+                     # PTB-XL Benchmark Article's Filter Dim if False
+                     fc_drop=0.5,)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    classification_model = model.load_state_dict(torch.load('./model/best_model.pth', map_location=device))
+    digitization_filename = os.path.join(model_folder, 'digitization_model.sav')
+    digitization_model = joblib.load(digitization_filename)
+
+
+    return digitization_model, classification_model
 
 # Run your trained digitization model. This function is *required*. You should edit this function to add your code, but do *not*
 # change the arguments of this function. If you did not train one of the models, then you can return None for the model.
@@ -159,8 +168,15 @@ def run_models(record, digitization_model, classification_model, verbose):
 
     # Load the classification model and classes.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = classification_model['model'].to(device)
-    classes = classification_model['classes']
+    #model = classification_model['model'].to(device)
+    model =xresnet1d.xresnet1d101(model_drop_r=None,
+                     original_f_number=False,
+                     # Original xResnet's Resblock Filter Dim if True
+                     # PTB-XL Benchmark Article's Filter Dim if False
+                     fc_drop=0.5,)
+    model.load_state_dict( torch.load('./model/best_model.pth', map_location=device))
+    #classes = classification_model['classes']
+    classes = np.load("./model/classes.npy",allow_pickle=True)
 
 
     #################################################################LY##############################################
@@ -173,7 +189,7 @@ def run_models(record, digitization_model, classification_model, verbose):
     max_probability = np.nanmax(probabilities)
     labels = [classes[i] for i, probability in enumerate(probabilities) if probability == max_probability]
     """
-
+    model.eval()
     output = model(torch.from_numpy(np.transpose(signal_250).reshape(-1, 12, 250)).float().to(device))  # 转换为 float Tensor
     output = torch.sigmoid(output)
 

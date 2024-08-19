@@ -332,7 +332,7 @@ def signal_restruct(image_path,num_samples,num_signals):
     H = cv2.imread(image_path).shape[0]
     W_bili = 1700/W
     H_bili = 1500/H
-    print(f"W,H,W_bili,H_bili:{W} {H} {W_bili} {H_bili}")
+    #print(f"W,H,W_bili,H_bili:{W} {H} {W_bili} {H_bili}")
     resize_image(image_path, image_path, size=(1700, 1500))
     model = YOLO('./image_to_signal/best.pt')#
     results = model.predict(source=image_path, save=False, save_txt=False)
@@ -383,10 +383,10 @@ def signal_restruct(image_path,num_samples,num_signals):
             x2 = min(image_width, int(x_center + width // 2))
             y2 = min(image_height, int(y_center + height // 2))
 
-            print(f"x1:{x1}")
-            print(f"x2:{x2}")
-            print(f"y1:{y1}")
-            print(f"y2:{y2}")
+            #print(f"x1:{x1}")
+            #print(f"x2:{x2}")
+            #print(f"y1:{y1}")
+            #print(f"y2:{y2}")
 
             # 提取边界框内的图像区域
             target_region = gray_image[y1:y2, x1:x2]
