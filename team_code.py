@@ -125,8 +125,8 @@ def load_models(model_folder, verbose):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     classification_model = model.load_state_dict(torch.load('./model/best_model.pth', map_location=device))
     digitization_filename = os.path.join(model_folder, 'digitization_model.sav')
-    digitization_model = joblib.load(digitization_filename)
-
+    #digitization_model = joblib.load(digitization_filename)
+    digitization_model = 111
 
     return digitization_model, classification_model
 
